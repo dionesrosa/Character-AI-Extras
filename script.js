@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Character.AI Extras
 // @namespace    https://github.com/dionesrosa
-// @version      0.1
+// @version      1.0.0
 // @description  Ajustes especificos para o Character.ai
 // @author       Diones Souza
 // @license      MIT
@@ -37,17 +37,50 @@
         }
     };
 
+    // Limpeza de texto para falas (remove espaços extras, aspas, travessões e marcadores comuns)
+    function limparFala(texto) {
+        return texto
+            .trim()
+
+            // remove aspas e variações nas bordas
+            .replace(/^["'“”]+/, '')
+            .replace(/["'“”]+$/, '')
+
+            // remove travessão e hífen no começo
+            .replace(/^[-–—]+\s*/, '')
+
+            // remove marcadores tipo * ou _ nas bordas
+            .replace(/^[*_]+/, '')
+            .replace(/[*_]+$/, '')
+
+            .trim();
+    }
+
     // Log de aviso personalizado
     function logAviso(...args) {
         console.warn('[C.AI-Extras]', ...args);
     }
 
-     // CSS personalizado
+    // CSS personalizado
     GM_addStyle(`
-        .caiextras-acao {
+        .caiextras-linha-fala {
+            display: block;
+            margin: 6px 0;
+        }
+
+        .caiextras-linha-narracao {
+            display: block;
+            margin: 6px 0;
+        }
+
+        .caiextras-fala {
+            font-weight: 600;
+        }
+
+        .caiextras-narracao {
             color: #ff8ac7;
             font-style: italic;
-            padding: 1px 4px;
+            opacity: .9;
         }
     `);
 
@@ -71,27 +104,80 @@
         }
     }
 
-    // Destaca mensagens de ações (itálico único)
-    function destacarAcoes() {
+    function formatarMensagens() {
         document.querySelectorAll(
-            '[data-testid="completed-message"] em'
-        ).forEach(em => {
+            '[data-testid="completed-message"] p'
+        ).forEach(p => {
+            if (p.dataset.caiextrasFormatado) return;
 
-            if (em.dataset.caiextrasAcao) return;
+            p.dataset.caiextrasFormatado = '1';
 
-            em.dataset.caiextrasAcao = '1';
-            em.classList.add('caiextras-acao');
+            const nos = Array.from(p.childNodes);
+
+            // Narrativa pura
+            if (
+                nos.length === 1 &&
+                nos[0].nodeType === Node.ELEMENT_NODE &&
+                nos[0].tagName === 'EM'
+            ) {
+
+                const texto = limparFala(nos[0].textContent);
+
+                p.innerHTML = `<span class="caiextras-narracao">(${texto})</span>`;
+
+                return;
+            }
+
+            let html = '';
+            let falaAtual = '';
+
+            nos.forEach(no => {
+
+                // Texto = fala
+                if (no.nodeType === Node.TEXT_NODE) {
+
+                    const texto = limparFala(no.textContent);
+
+                    if (!texto) return;
+
+                    falaAtual = texto;
+                }
+
+                // EM = ação
+                else if (
+                    no.nodeType === Node.ELEMENT_NODE &&
+                    no.tagName === 'EM'
+                ) {
+
+                    const texto = limparFala(no.textContent);
+
+                    if (falaAtual) {
+                        html += `<span class="caiextras-linha-fala"><strong class="caiextras-fala">— ${falaAtual}</strong><span class="caiextras-narracao"> (${texto})</span></span>`;
+                        falaAtual = '';
+                    } else {
+                        html += `<span class="caiextras-linha-narracao"><span class="caiextras-narracao">(${texto})</span></span>`;
+                    }
+                }
+
+            });
+
+            // Sobrou fala sem ação
+            if (falaAtual) {
+                html += `<span class="caiextras-linha-fala"><strong class="caiextras-fala">— ${falaAtual}</strong></span>`;
+            }
+
+            p.innerHTML = html;
         });
     }
 
     // Executa uma vez ao iniciar
     ocultarAnuncios();
-    destacarAcoes();
+    formatarMensagens();
 
     // Observa mudanças no DOM
     const observador = new MutationObserver(() => {
         ocultarAnuncios();
-        destacarAcoes();
+        formatarMensagens();
     });
 
     observador.observe(document.body, {
