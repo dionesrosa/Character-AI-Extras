@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Character.AI Extras
 // @namespace    https://github.com/dionesrosa
-// @version      1.0.2
+// @version      1.0.3
 // @description  Ajustes especificos para o Character.ai
 // @author       Diones Souza
 // @license      MIT
@@ -162,6 +162,13 @@
             font-style: italic;
             opacity: .9;
         }
+
+        [data-testid="completed-message"] ul,
+        [data-testid="streaming-message"] ul {
+            list-style: none !important;
+            padding-left: 0 !important;
+            margin: 0 !important;
+        }
     `);
 
     // Oculta blocos de anúncios
@@ -185,14 +192,19 @@
     }
 
     function formatarMensagens() {
-        document.querySelectorAll('[data-testid="completed-message"] p, [data-testid="streaming-message"] p').forEach(p => {
+        document.querySelectorAll(`
+            [data-testid="completed-message"] p,
+            [data-testid="streaming-message"] p,
+            [data-testid="completed-message"] li,
+            [data-testid="streaming-message"] li
+        `).forEach(p => {
             if (p.dataset.caiextrasFormatado) return;
 
             p.dataset.caiextrasFormatado = '1';
 
             const nos = Array.from(p.childNodes);
 
-            // Narrativa pura
+            // Caso especial: apenas um EM (narrativa) sem fala
             if (
                 nos.length === 1 &&
                 nos[0].nodeType === Node.ELEMENT_NODE &&
@@ -211,7 +223,7 @@
 
             nos.forEach(no => {
 
-                // Texto = fala
+                // Texto puro = fala
                 if (no.nodeType === Node.TEXT_NODE) {
 
                     const texto = limparFala(no.textContent);
@@ -221,7 +233,7 @@
                     falaAtual = texto;
                 }
 
-                // EM = ação
+                // EM = narrativa
                 else if (
                     no.nodeType === Node.ELEMENT_NODE &&
                     no.tagName === 'EM'
@@ -235,6 +247,17 @@
                     } else {
                         html += `<span class="caiextras-linha-narracao"><span class="caiextras-narracao">(${texto})</span></span>`;
                     }
+                }
+
+                // LI = fala em lista (ex: ações de grupo)
+                else if (no.nodeType === Node.ELEMENT_NODE && no.tagName === 'LI') {
+                    const texto = limparFala(no.textContent);
+
+                    if (texto) {
+                        html += `<span class="caiextras-linha-fala"><strong class="caiextras-fala">— ${texto}</strong></span>`;
+                    }
+
+                    return;
                 }
 
             });
