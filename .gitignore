@@ -145,7 +145,7 @@ vite.config.ts.timestamp-*
 .bat
 load.js
 server.js
-DEV/
+DEV/*
 package-lock.json
 yarn.lock
 package.json
