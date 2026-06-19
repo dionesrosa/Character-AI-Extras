@@ -224,7 +224,9 @@
             nos.forEach(no => {
 
                 // Texto puro = fala
-                if (no.nodeType === Node.TEXT_NODE) {
+                if (
+                    no.nodeType === Node.TEXT_NODE
+                ) {
 
                     const texto = limparFala(no.textContent);
 
@@ -250,7 +252,24 @@
                 }
 
                 // LI = fala em lista (ex: ações de grupo)
-                else if (no.nodeType === Node.ELEMENT_NODE && no.tagName === 'LI') {
+                else if (
+                    no.nodeType === Node.ELEMENT_NODE &&
+                    no.tagName === 'LI'
+                ) {
+                    const texto = limparFala(no.textContent);
+
+                    if (texto) {
+                        html += `<span class="caiextras-linha-fala"><strong class="caiextras-fala">— ${texto}</strong></span>`;
+                    }
+
+                    return;
+                }
+
+                // STRONG = fala em negrito (ex: ações de grupo já formatadas)
+                else if (
+                    no.nodeType === Node.ELEMENT_NODE &&
+                    no.tagName === 'STRONG'
+                ) {
                     const texto = limparFala(no.textContent);
 
                     if (texto) {
