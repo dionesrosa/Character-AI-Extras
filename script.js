@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Character.AI Extras
 // @namespace    https://github.com/dionesrosa
-// @version      1.0.0
+// @version      1.0.1
 // @description  Ajustes especificos para o Character.ai
 // @author       Diones Souza
 // @license      MIT
@@ -106,9 +106,7 @@
     }
 
     function formatarMensagens() {
-        document.querySelectorAll(
-            '[data-testid="completed-message"] p, [data-testid="streaming-message"] p'
-        ).forEach(p => {
+        document.querySelectorAll('[data-testid="completed-message"] p, [data-testid="streaming-message"] p').forEach(p => {
             if (p.dataset.caiextrasFormatado) return;
 
             p.dataset.caiextrasFormatado = '1';
