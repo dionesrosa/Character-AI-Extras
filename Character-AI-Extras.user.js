@@ -29,9 +29,10 @@
     // Aplica modificações de CSS e comportamento visual.
     function modificarCSS() {
         try {
-            // Aplica cor de fundo no tempo do vídeo/áudio com base na duração
-            consultaTodosSegura('.video-time').forEach(e => {
-                e.style.setProperty('border-radius', '4px', 'important');
+            consultaTodosSegura('button').forEach(btn => {
+                if (btn.textContent.includes('Ocultar anúncios')) {
+                    btn.closest('div.w-full')?.style.setProperty('display', 'none', 'important');
+                }
             });
         } catch (erro) {
             console.error('Erro em modificarCSS', erro);
@@ -40,21 +41,8 @@
 
     // Observador de Mutações para detectar a adição de elementos (menu de contexto, barra de seleção).
     const observador = new MutationObserver((mutacoes) => {
-        for (const mutacao of mutacoes) {
-            for (const noAdicionado of mutacao.addedNodes) {
-                if (noAdicionado.nodeType !== 1) continue;
-                const elemento = noAdicionado;
-
-                // Remove mensagens patrocinadas
-                try {
-                    if (elemento.classList?.contains('is-sponsored')) elemento.remove();
-                    consultaTodosSegura('.is-sponsored', elemento).forEach(s => s.remove());
-                } catch (e) {}
-
-                // Aplica estilos CSS
-                modificarCSS();
-            }
-        }
+        // Aplica estilos CSS
+        modificarCSS();
     });
 
     // Inicia a observação no documento
