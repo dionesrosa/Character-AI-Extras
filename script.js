@@ -45,11 +45,9 @@
      // CSS personalizado
     GM_addStyle(`
         .caiextras-acao {
-            border-left: 3px solid #ff1493;
-            padding-left: 12px !important;
-            margin-left: 4px !important;
-            opacity: 0.85;
+            color: #ff8ac7;
             font-style: italic;
+            padding: 1px 4px;
         }
     `);
 
@@ -75,17 +73,14 @@
 
     // Destaca mensagens de ações (itálico único)
     function destacarAcoes() {
-        document.querySelectorAll('[data-testid="completed-message"] p').forEach(p => {
+        document.querySelectorAll(
+            '[data-testid="completed-message"] em'
+        ).forEach(em => {
 
-            if (p.dataset.caiextrasAcao) return;
+            if (em.dataset.caiextrasAcao) return;
 
-            const unicoFilho = p.children.length === 1;
-            const ehItalico = p.firstElementChild?.tagName === 'EM';
-
-            if (unicoFilho && ehItalico) {
-                p.dataset.caiextrasAcao = '1';
-                p.classList.add('caiextras-acao');
-            }
+            em.dataset.caiextrasAcao = '1';
+            em.classList.add('caiextras-acao');
         });
     }
 
