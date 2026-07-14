@@ -1,7 +1,4 @@
-(function () {
-    'use strict';
-
-    // Consulta segura (retorna null em caso de erro)
+// Consulta segura (retorna null em caso de erro)
     const consultaSegura = (seletor, raiz = document) => {
         try {
             return raiz.querySelector(seletor);
@@ -286,5 +283,3 @@
         childList: true,
         subtree: true
     });
-
-})();

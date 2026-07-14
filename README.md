@@ -1,6 +1,6 @@
-# Character.AI Extras
+# Character.ai Plus
 
-Userscript para o Character.AI desenvolvido por Diones Souza com Tampermonkey.
+Userscript para o Character.ai desenvolvido por Diones Souza com Tampermonkey.
 
 [![Licença MIT](https://img.shields.io/badge/licença-MIT-green)](LICENSE)
 [![Tampermonkey](https://img.shields.io/badge/Tampermonkey-suportado-orange)](https://www.tampermonkey.net/)
@@ -11,7 +11,7 @@ Userscript para o Character.AI desenvolvido por Diones Souza com Tampermonkey.
 
 ## ✨ O que o script faz
 
-Este userscript melhora a leitura das mensagens do Character.AI, organizando falas, ações e narrações em um visual mais limpo e consistente.
+Este userscript melhora a leitura das mensagens do Character.ai, organizando falas, ações e narrações em um visual mais limpo e consistente.
 
 ## 🔧 Funcionalidades
 
@@ -25,7 +25,7 @@ Este userscript melhora a leitura das mensagens do Character.AI, organizando fal
 
 1. Instale a extensão [Tampermonkey](https://www.tampermonkey.net/) no navegador.
 2. Instale o userscript disponível no link acima.
-3. Acesse o Character.AI normalmente e confira a nova organização visual.
+3. Acesse o Character.ai normalmente e confira a nova organização visual.
 
 ## 🖱️ Como usar
 
@@ -33,15 +33,21 @@ O script entra em ação automaticamente assim que as mensagens são renderizada
 
 ## 🛠️ Compilação com userscript-builder
 
-Se você quiser gerar o arquivo final localmente, execute:
+Esta seção é destinada a desenvolvedores que quiserem gerar e publicar o userscript localmente.
 
-```bash
-usb build
-```
+O [userscript-builder](https://github.com/dionesrosa/userscript-builder) lê os metadados do arquivo [userscript.config.json](userscript.config.json), usa a entrada principal em [src/index.js](src/index.js) e gera o arquivo final com o cabeçalho do Tampermonkey automaticamente.
+
+### Comandos mais usados
+
+- `usb build` — gera o arquivo final em `dist/`
+- `usb release patch|minor|major` — atualiza a versão e cria um release
+- `usb publish` — publica o build no GitHub Releases
+
+> Para quem apenas vai usar o script, o fluxo mais simples é instalar o userscript diretamente pelo link de instalação acima.
 
 ## 🧩 Estrutura do projeto
 
-- [script.js](script.js): lógica principal do userscript
+- [src/index.js](src/index.js): lógica principal do userscript
 - [userscript.config.json](userscript.config.json): metadados e configuração do build
 
 ## 👤 Autor
