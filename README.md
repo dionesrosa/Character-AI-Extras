@@ -1,98 +1,53 @@
 # Character.AI Extras
 
-Extensão Userscript para melhorar a leitura e organização das mensagens no Character.AI.
+Userscript para o Character.AI desenvolvido por Diones Souza com Tampermonkey.
 
-Transforma o chat em um formato mais legível, separando falas, ações e narrações com destaque visual.
+[![Licença MIT](https://img.shields.io/badge/licença-MIT-green)](LICENSE)
+[![Tampermonkey](https://img.shields.io/badge/Tampermonkey-suportado-orange)](https://www.tampermonkey.net/)
+
+[![Instalar](https://img.shields.io/badge/Instalar-Userscript-blue?style=for-the-badge&logo=Tampermonkey)](https://raw.githubusercontent.com/dionesrosa/Character-AI-Extras/main/dist/character-ai-extras.user.js)
 
 ---
 
-## ✨ O que esse script faz
+## ✨ O que o script faz
 
-- Remove anúncios do layout
+Este userscript melhora a leitura das mensagens do Character.AI, organizando falas, ações e narrações em um visual mais limpo e consistente.
+
+## 🔧 Funcionalidades
+
+- Remove blocos de anúncios do layout
 - Destaca falas com travessão (—)
-- Converte narrações em estilo de pensamento (itálico + cor)
-- Remove ruído de formatação do CharacterAI:
-  - aspas externas
-  - `*` e `_` de markdown
-  - travessões duplicados
-- Separa visualmente falas e ações
-- Organiza mensagens em blocos mais fáceis de ler
+- Converte narrações para um estilo visual mais legível
+- Limpa ruídos de formatação como aspas, asteriscos e underscores
+- Organiza as mensagens em blocos mais fáceis de acompanhar
 
----
+## 🚀 Instalação
 
-## 🎯 Exemplo de transformação
+1. Instale a extensão [Tampermonkey](https://www.tampermonkey.net/) no navegador.
+2. Instale o userscript disponível no link acima.
+3. Acesse o Character.AI normalmente e confira a nova organização visual.
 
-### Antes:
+## 🖱️ Como usar
+
+O script entra em ação automaticamente assim que as mensagens são renderizadas na interface. Não é necessário fazer nenhuma configuração adicional.
+
+## 🛠️ Compilação com userscript-builder
+
+Se você quiser gerar o arquivo final localmente, execute:
+
+```bash
+usb build
 ```
 
-"Qualquer horário mesmo?" *Ele perguntou baixo.*
+## 🧩 Estrutura do projeto
 
-```
+- [script.js](script.js): lógica principal do userscript
+- [userscript.config.json](userscript.config.json): metadados e configuração do build
 
-### Depois:
-```
+## 👤 Autor
 
-— Qualquer horário mesmo? (Ele perguntou baixo.)
+Diones Souza
 
-```
+## 📜 Licença
 
----
-
-## 🧠 Como funciona
-
-O script intercepta mensagens já renderizadas pelo Character.AI e:
-
-- Analisa os elementos `<p>` da mensagem
-- Detecta:
-  - texto normal → fala
-  - `<em>` → ação / narração
-- Reestrutura o HTML para melhorar leitura
-- Aplica limpeza de texto antes de exibir
-
----
-
-## 🎨 Estilo visual
-
-- Falas:
-  - Negrito
-  - Prefixo: `—`
-- Narração / pensamento:
-  - Itálico
-  - Cor rosa suave
-  - Entre parênteses
-
----
-
-## ⚙️ Instalação
-
-1. Instale um gerenciador de userscript:
-   - Tampermonkey (Chrome / Firefox)
-
-2. Adicione o script:
-   - Cole o conteúdo do `script.js`
-   - Ou use o link de update direto do GitHub
-
-3. Acesse o Character.AI normalmente
-
----
-
-## 🔧 Tecnologias
-
-- JavaScript (Userscript)
-- MutationObserver
-- Manipulação direta de DOM
-- GM_addStyle (Tampermonkey)
-
----
-
-## 📌 Observações
-
-- O script altera apenas a visualização local
-- Não interfere nos dados do Character.AI
-- Funciona em tempo real conforme novas mensagens aparecem
-
----
-
-## 📄 Licença
-
-MIT — uso livre com modificação permitida
+MIT
